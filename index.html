@@ -1,459 +1,668 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sebastián Rodriguez - Portafolio Dev</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700&display=swap"
-        rel="stylesheet">
+    <title>Sebastián Rodriguez — Full Stack Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0a0a23;
-            --secondary: #00ff9d;
-            --accent: #ff3864;
-            --accent2: #5271ff;
-            --text: #ffffff;
-            --dark: #1e1e2e;
-            --darker: #0d0d15;
-            --glow: 0 0 10px var(--secondary), 0 0 20px var(--secondary);
+            --bg:           #07070f;
+            --surface:      #0f0f1e;
+            --surface2:     #191930;
+            --border:       rgba(255,255,255,0.07);
+            --primary:      #7c3aed;
+            --primary-l:    #a78bfa;
+            --cyan:         #06b6d4;
+            --pink:         #ec4899;
+            --green:        #10b981;
+            --text:         #f1f5f9;
+            --muted:        #94a3b8;
+            --nav-h:        68px;
         }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden; }
+        a { color:inherit; text-decoration:none; }
+        img { max-width:100%; display:block; }
+        ul { list-style:none; }
+        ::-webkit-scrollbar { width:6px; }
+        ::-webkit-scrollbar-track { background:var(--bg); }
+        ::-webkit-scrollbar-thumb { background:var(--primary); border-radius:3px; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Navbar */
+        nav {
+            position:fixed; top:0; left:0; right:0;
+            height:var(--nav-h); z-index:100;
+            background:rgba(7,7,15,0.6);
+            backdrop-filter:blur(18px) saturate(1.5);
+            border-bottom:1px solid var(--border);
+            transition:background 0.3s;
         }
+        nav.scrolled { background:rgba(7,7,15,0.95); }
+        .nav-inner { max-width:1160px; margin:0 auto; padding:0 24px; height:100%; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; letter-spacing:-0.5px; }
+        .nav-logo span { color:var(--primary-l); }
+        .nav-links { display:flex; gap:32px; align-items:center; }
+        .nav-links a { font-size:0.875rem; font-weight:500; color:var(--muted); transition:color 0.2s; position:relative; }
+        .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--primary-l); transform:scaleX(0); transition:transform 0.2s; }
+        .nav-links a:hover { color:var(--text); }
+        .nav-links a:hover::after { transform:scaleX(1); }
+        .nav-cta { padding:8px 20px; background:var(--primary); border-radius:8px; font-size:0.875rem; font-weight:600; color:#fff !important; transition:background 0.2s,transform 0.15s !important; }
+        .nav-cta:hover { background:var(--primary-l) !important; transform:translateY(-1px); }
+        .nav-cta::after { display:none !important; }
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+        .hamburger span { width:24px; height:2px; background:var(--text); border-radius:2px; transition:0.3s; }
 
-        body {
-            background-color: var(--primary);
-            color: var(--text);
-            font-family: 'Orbitron', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(0, 255, 157, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 70%, rgba(82, 113, 255, 0.05) 0%, transparent 20%);
-        }
+        /* Hero */
+        #hero { min-height:100vh; display:flex; align-items:center; padding:calc(var(--nav-h) + 40px) 24px 80px; position:relative; overflow:hidden; }
+        .hero-blobs { position:absolute; inset:0; pointer-events:none; z-index:0; }
+        .blob { position:absolute; border-radius:50%; filter:blur(100px); opacity:0.18; }
+        .blob-1 { width:500px; height:500px; background:var(--primary); top:-100px; right:-80px; }
+        .blob-2 { width:400px; height:400px; background:var(--cyan); bottom:-80px; left:-80px; }
+        .blob-3 { width:300px; height:300px; background:var(--pink); top:40%; left:40%; }
+        .hero-inner { max-width:1160px; margin:0 auto; display:grid; grid-template-columns:1fr auto; gap:60px; align-items:center; width:100%; position:relative; z-index:1; }
+        .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(124,58,237,0.15); border:1px solid rgba(124,58,237,0.3); border-radius:100px; padding:6px 16px; font-size:0.8rem; color:var(--primary-l); margin-bottom:24px; }
+        .hero-badge .dot { width:7px; height:7px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.5);} 50%{box-shadow:0 0 0 6px rgba(16,185,129,0);} }
+        .hero-title { font-family:'Space Grotesk',sans-serif; font-size:clamp(2.4rem,5vw,4rem); font-weight:800; line-height:1.1; letter-spacing:-1.5px; margin-bottom:20px; }
+        .hero-title .gradient { background:linear-gradient(135deg,var(--primary-l) 0%,var(--cyan) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .hero-subtitle { font-size:1.1rem; color:var(--muted); max-width:500px; margin-bottom:36px; }
+        .hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+        .btn-primary { padding:13px 28px; background:var(--primary); border-radius:10px; font-weight:600; font-size:0.925rem; color:#fff; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-primary:hover { background:var(--primary-l); transform:translateY(-2px); box-shadow:0 8px 30px rgba(124,58,237,0.35); }
+        .btn-outline { padding:13px 28px; background:transparent; border-radius:10px; font-weight:600; font-size:0.925rem; color:var(--text); border:1px solid var(--border); transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-outline:hover { border-color:var(--primary-l); color:var(--primary-l); transform:translateY(-2px); }
+        .hero-contact { display:flex; gap:20px; margin-top:28px; flex-wrap:wrap; }
+        .hero-contact-item { display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--muted); }
+        .hero-contact-item i { color:var(--primary-l); }
+        .hero-img-wrap { position:relative; width:280px; flex-shrink:0; }
+        .hero-img-bg { position:absolute; inset:-12px; border-radius:50%; background:conic-gradient(from 180deg,var(--primary),var(--cyan),var(--pink),var(--primary)); animation:spin 6s linear infinite; opacity:0.5; }
+        @keyframes spin { to{transform:rotate(360deg);} }
+        .hero-img-wrap img { width:280px; height:280px; border-radius:50%; object-fit:cover; position:relative; z-index:1; border:4px solid var(--surface); }
+        .hero-img-badge { position:absolute; bottom:12px; right:0; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:8px 14px; font-size:0.8rem; font-weight:600; z-index:2; white-space:nowrap; display:flex; align-items:center; gap:6px; }
+        .hero-img-badge i { color:var(--cyan); }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        /* Sections */
+        section { padding:96px 24px; position:relative; z-index:1; }
+        .container { max-width:1160px; margin:0 auto; }
+        .section-label { font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:3px; color:var(--primary-l); margin-bottom:12px; }
+        .section-title { font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:700; letter-spacing:-0.8px; margin-bottom:14px; }
+        .section-desc { color:var(--muted); font-size:1rem; max-width:560px; margin-bottom:56px; }
+        .divider { width:56px; height:3px; background:linear-gradient(90deg,var(--primary),var(--cyan)); border-radius:2px; margin-bottom:16px; }
 
-        /* Header estilizado */
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            border-bottom: 4px solid var(--secondary);
-            box-shadow: var(--glow);
-            position: relative;
-            overflow: hidden;
-        }
+        /* About */
+        #about { background:var(--surface); }
+        .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+        .about-text p { color:var(--muted); margin-bottom:16px; font-size:1rem; line-height:1.75; }
+        .about-text strong { color:var(--text); }
+        .about-cards { display:flex; flex-direction:column; gap:16px; }
+        .info-card { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:18px 20px; display:flex; align-items:flex-start; gap:16px; transition:border-color 0.2s,transform 0.2s; }
+        .info-card:hover { border-color:rgba(124,58,237,0.4); transform:translateX(4px); }
+        .info-card-icon { width:42px; height:42px; border-radius:10px; background:rgba(124,58,237,0.15); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:var(--primary-l); flex-shrink:0; }
+        .info-card-body h4 { font-size:0.875rem; font-weight:600; margin-bottom:3px; }
+        .info-card-body p { font-size:0.825rem; color:var(--muted); margin:0; }
 
-        header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                linear-gradient(90deg, transparent 48%, rgba(0, 255, 157, 0.1) 50%, transparent 52%);
-            background-size: 10px 100%;
-            pointer-events: none;
-        }
+        /* Projects */
+        #proyectos { background:var(--bg); }
+        .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:24px; }
+        .project-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s; display:flex; flex-direction:column; }
+        .project-card:hover { transform:translateY(-6px); border-color:rgba(124,58,237,0.4); box-shadow:0 20px 60px rgba(124,58,237,0.15); }
+        .project-card.featured { border-color:rgba(124,58,237,0.35); }
+        .project-thumb { width:100%; height:200px; overflow:hidden; position:relative; }
+        .project-thumb img { width:100%; height:100%; object-fit:cover; transition:transform 0.4s; }
+        .project-card:hover .project-thumb img { transform:scale(1.05); }
+        .project-thumb-placeholder { width:100%; height:200px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; position:relative; }
+        .project-thumb-placeholder.noctis { background:linear-gradient(135deg,#0a001a 0%,#1a0636 50%,#0d1040 100%); }
+        .project-thumb-placeholder.ecommerce { background:linear-gradient(135deg,#001a0f 0%,#003d1e 50%,#001a2e 100%); }
+        .project-featured-badge { position:absolute; top:12px; left:12px; background:var(--primary); color:#fff; font-size:0.7rem; font-weight:700; padding:4px 10px; border-radius:100px; text-transform:uppercase; letter-spacing:1px; }
+        .project-body { padding:24px; flex:1; display:flex; flex-direction:column; }
+        .project-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+        .project-year { font-size:0.78rem; color:var(--muted); }
+        .project-body h3 { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700; margin-bottom:10px; letter-spacing:-0.3px; }
+        .project-body p { font-size:0.9rem; color:var(--muted); line-height:1.65; margin-bottom:16px; flex:1; }
+        .tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:20px; }
+        .tag { font-size:0.75rem; font-weight:600; padding:4px 12px; border-radius:100px; background:rgba(124,58,237,0.15); color:var(--primary-l); border:1px solid rgba(124,58,237,0.2); }
+        .tag.cyan { background:rgba(6,182,212,0.12); color:var(--cyan); border-color:rgba(6,182,212,0.2); }
+        .tag.pink { background:rgba(236,72,153,0.12); color:var(--pink); border-color:rgba(236,72,153,0.2); }
+        .project-links { display:flex; gap:12px; }
+        .project-link { display:inline-flex; align-items:center; gap:6px; font-size:0.83rem; font-weight:600; padding:9px 18px; border-radius:8px; transition:all 0.2s; }
+        .project-link.primary { background:var(--primary); color:#fff; }
+        .project-link.primary:hover { background:var(--primary-l); transform:translateY(-1px); }
+        .project-link.ghost { border:1px solid var(--border); color:var(--muted); }
+        .project-link.ghost:hover { border-color:var(--primary-l); color:var(--primary-l); }
 
-        .profile-img {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--secondary);
-            box-shadow: var(--glow);
-            margin-bottom: 20px;
-        }
+        /* Skills */
+        #habilidades { background:var(--surface); }
+        .skills-cats { display:flex; flex-direction:column; gap:40px; }
+        .skill-cat { background:var(--surface2); border:1px solid var(--border); border-radius:16px; padding:28px 28px 24px; transition:border-color 0.2s; }
+        .skill-cat:hover { border-color:rgba(124,58,237,0.3); }
+        .skill-cat-header { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+        .skill-cat-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .skill-cat-icon.violet { background:rgba(124,58,237,0.15); color:var(--primary-l); }
+        .skill-cat-icon.cyan { background:rgba(6,182,212,0.12); color:var(--cyan); }
+        .skill-cat-icon.pink { background:rgba(236,72,153,0.12); color:var(--pink); }
+        .skill-cat-icon.green { background:rgba(16,185,129,0.12); color:var(--green); }
+        .skill-cat h3 { font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:700; margin:0; }
+        .skill-cat-desc { font-size:0.875rem; color:var(--muted); line-height:1.7; margin-bottom:16px; }
+        .skill-cat-desc strong { color:var(--text); font-weight:600; }
+        .chip-row { display:flex; flex-wrap:wrap; gap:8px; }
+        .chip { font-size:0.75rem; font-weight:600; padding:4px 13px; border-radius:100px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--muted); white-space:nowrap; }
+        .chip.v { background:rgba(124,58,237,0.12); color:var(--primary-l); border-color:rgba(124,58,237,0.2); }
+        .chip.c { background:rgba(6,182,212,0.1); color:var(--cyan); border-color:rgba(6,182,212,0.18); }
+        .chip.p { background:rgba(236,72,153,0.1); color:var(--pink); border-color:rgba(236,72,153,0.18); }
+        .chip.g { background:rgba(16,185,129,0.1); color:var(--green); border-color:rgba(16,185,129,0.18); }
 
-        h1,
-        h2,
-        h3 {
-            font-family: 'Press Start 2P', cursive;
-            text-shadow: 3px 3px 0 #000;
-        }
+        /* Timeline */
+        #experiencia { background:var(--bg); }
+        .timeline { position:relative; padding-left:28px; }
+        .timeline::before { content:''; position:absolute; left:0; top:6px; bottom:6px; width:2px; background:linear-gradient(to bottom,var(--primary),var(--cyan),transparent); border-radius:2px; }
+        .timeline-item { position:relative; padding-bottom:36px; }
+        .timeline-item:last-child { padding-bottom:0; }
+        .timeline-dot { position:absolute; left:-34px; top:4px; width:14px; height:14px; border-radius:50%; background:var(--primary); border:3px solid var(--bg); box-shadow:0 0 0 3px rgba(124,58,237,0.3); }
+        .timeline-date { font-size:0.78rem; color:var(--primary-l); font-weight:600; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
+        .timeline-item h3 { font-family:'Space Grotesk',sans-serif; font-size:1.05rem; font-weight:700; margin-bottom:4px; }
+        .timeline-item .place { font-size:0.875rem; color:var(--cyan); font-weight:500; margin-bottom:10px; }
+        .timeline-item p { font-size:0.9rem; color:var(--muted); line-height:1.65; }
 
-        h1 {
-            font-size: 2rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
+        /* Contact */
+        #contacto { background:var(--surface); text-align:center; }
+        .contact-grid { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:48px; }
+        .contact-card { background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:24px 28px; display:flex; align-items:center; gap:14px; min-width:240px; transition:all 0.2s; }
+        .contact-card:hover { border-color:rgba(124,58,237,0.4); transform:translateY(-3px); }
+        .contact-card-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+        .contact-card-icon.purple { background:rgba(124,58,237,0.15); color:var(--primary-l); }
+        .contact-card-icon.cyan { background:rgba(6,182,212,0.12); color:var(--cyan); }
+        .contact-card-icon.pink { background:rgba(236,72,153,0.12); color:var(--pink); }
+        .contact-card-body .label { font-size:0.78rem; color:var(--muted); margin-bottom:2px; display:block; }
+        .contact-card-body .value { font-size:0.9rem; font-weight:600; display:block; }
+        .social-links { display:flex; justify-content:center; gap:14px; }
+        .social-link { width:46px; height:46px; border-radius:12px; background:var(--surface2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:var(--muted); transition:all 0.2s; }
+        .social-link:hover { border-color:var(--primary-l); color:var(--primary-l); transform:translateY(-2px); }
 
-        .title {
-            font-size: 1.1rem;
-            color: var(--accent2);
-            margin-bottom: 20px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-        }
+        /* Footer */
+        footer { background:var(--bg); border-top:1px solid var(--border); text-align:center; padding:32px 24px; }
+        footer p { font-size:0.85rem; color:var(--muted); }
+        footer span { color:var(--primary-l); }
 
-        .pixel-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: var(--accent);
-            color: white;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.7rem;
-            text-decoration: none;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #b30032;
-            transition: all 0.1s;
-            margin: 8px 4px;
-        }
-
-        .pixel-button:hover {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #b30032;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .contact-item i {
-            color: var(--secondary);
-            font-size: 1.1rem;
-        }
-
-        /* Secciones de contenido */
-        .content {
-            display: grid;
-            grid-template-columns: 7fr 5fr;
-            gap: 25px;
-            margin: 30px 0;
-        }
-
-        .main-content,
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .section {
-            background: rgba(30, 30, 46, 0.8);
-            padding: 20px;
-            border: 2px solid var(--accent2);
-            border-radius: 8px;
-            box-shadow: 0 0 12px rgba(82, 113, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent2), var(--secondary));
-        }
-
-        h2 {
-            color: var(--secondary);
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px dashed var(--accent2);
-        }
-
-        h3 {
-            color: var(--accent2);
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .date {
-            color: var(--secondary);
-            font-style: italic;
-            margin-bottom: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-        }
-
-        /* Habilidades estilo arcade */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .skill-category {
-            margin-bottom: 15px;
-        }
-
-        .skill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .tag {
-            display: inline-block;
-            background-color: var(--accent2);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-        }
-
-        .tag.ecommerce {
-            background-color: var(--accent);
-        }
-
-        /* Proyectos estilo arcade */
-        .project {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(13, 13, 21, 0.7);
-            border: 2px solid var(--secondary);
-            border-radius: 6px;
-            box-shadow: 0 0 12px rgba(0, 255, 157, 0.2);
-            transition: transform 0.3s;
-        }
-
-        .project:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
-        }
-
-        /* Footer estilo arcade */
-        footer {
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            text-align: center;
-            padding: 25px;
-            margin-top: 30px;
-            border-top: 3px solid var(--accent);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-        }
-
-        /* Efectos de máquina arcade */
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        .blink {
-            animation: blink 2s infinite;
-        }
+        /* Reveal */
+        .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease,transform 0.7s ease; }
+        .reveal.visible { opacity:1; transform:none; }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-info {
-                flex-direction: column;
-                align-items: center;
-                gap: 12px;
-            }
-
-            .skills-container {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .profile-img {
-                width: 120px;
-                height: 120px;
-            }
+        @media (max-width:900px) {
+            .hero-inner { grid-template-columns:1fr; }
+            .hero-img-wrap { display:none; }
+            .about-grid { grid-template-columns:1fr; gap:36px; }
+            .skills-layout { grid-template-columns:1fr; }
+        }
+        @media (max-width:640px) {
+            section { padding:72px 20px; }
+            .nav-links { display:none; }
+            .nav-links.open { display:flex; flex-direction:column; position:fixed; top:var(--nav-h); left:0; right:0; background:rgba(7,7,15,0.97); padding:24px; border-bottom:1px solid var(--border); gap:20px; z-index:99; }
+            .hamburger { display:flex; }
+            .projects-grid { grid-template-columns:1fr; }
+            .hero-title { font-size:2rem; }
+            .hero-actions { flex-direction:column; }
+            .btn-primary, .btn-outline { width:100%; justify-content:center; }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <h1>SEBASTIÁN RODRIGUEZ</h1>
-            <p class="title">FULL STACK DEVELOPER</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>Sebasuriel777@gmail.com</span>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="nav-logo">SR<span>.</span>dev</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">Sobre mí</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#habilidades">Skills</a></li>
+                <li><a href="#experiencia">Formación</a></li>
+                <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero">
+        <div class="hero-blobs">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+        </div>
+        <div class="hero-inner container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    Disponible para trabajar
                 </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>11 5346-8727</span>
+                <h1 class="hero-title">
+                    Hola, soy<br>
+                    <span class="gradient">Sebastián Rodriguez</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Full Stack Developer especializado en E-commerce. Construyo experiencias digitales rápidas, modernas y con buena UX — desde el backend hasta el pixel perfecto.
+                </p>
+                <div class="hero-actions">
+                    <a href="#proyectos" class="btn-primary">
+                        <i class="fas fa-rocket"></i> Ver mis proyectos
+                    </a>
+                    <a href="#contacto" class="btn-outline">
+                        <i class="fas fa-paper-plane"></i> Contactarme
+                    </a>
                 </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Buenos Aires, Argentina</span>
+                <div class="hero-contact">
+                    <span class="hero-contact-item"><i class="fas fa-envelope"></i> Sebasuriel777@gmail.com</span>
+                    <span class="hero-contact-item"><i class="fas fa-phone"></i> 11 5346-8727</span>
+                    <span class="hero-contact-item"><i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina</span>
                 </div>
             </div>
-            <div class="buttons">
-                <a href="#proyectos" class="pixel-button">MIS PROYECTOS</a>
-                <a href="#habilidades" class="pixel-button">MIS HABILIDADES</a>
+            <div class="hero-img-wrap">
+                <div class="hero-img-bg"></div>
+                <img src="img/Mi_foto.png" alt="Sebastián Rodriguez">
+                <div class="hero-img-badge">
+                    <i class="fas fa-code"></i> Full Stack Dev
+                </div>
             </div>
-        </header>
+        </div>
+    </section>
 
-        <div class="content">
-            <div class="main-content">
-                <section class="section">
-                    <h2><i class="fas fa-user"></i> PERFIL DEL JUGADOR</h2>
-                    <p>Desarrollador Full Stack especializado en E-commerce con mentalidad gamer. Mi enfoque combina la
-                        precisión técnica con la creatividad estratégica, aplicando las mismas tácticas de resolución de
-                        problemas que uso en los videojuegos. Siempre listo para enfrentar nuevos desafíos y subir de
-                        nivel mis habilidades.</p>
-                    <p>Mi lema: "En el desarrollo como en los juegos, cada línea de código es un movimiento estratégico
-                        hacia la victoria".</p>
-                </section>
+    <!-- About -->
+    <section id="about">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">Sobre mí</p>
+                <div class="divider"></div>
+                <h2 class="section-title">¿Quién soy?</h2>
+                <p class="section-desc">Desarrollador apasionado por construir productos que importen.</p>
+            </div>
+            <div class="about-grid reveal">
+                <div class="about-text">
+                    <p>Soy un <strong>Full Stack Developer</strong> con enfoque en E-commerce y aplicaciones web modernas. Me especializo en crear soluciones completas: desde APIs robustas en el backend hasta interfaces de usuario intuitivas en el frontend.</p>
+                    <p>Mi experiencia abarca el desarrollo de tiendas online con integración de pasarelas de pago, sistemas de inventario y paneles de administración. Siempre busco escribir código limpio, escalable y bien documentado.</p>
+                    <p>Cuando no estoy programando, me encontrás explorando mundos en RPGs o investigando las últimas tendencias en desarrollo web. Esa mentalidad de resolver puzzles la aplico constantemente en mis proyectos.</p>
+                    <br>
+                    <a href="#proyectos" class="btn-primary" style="display:inline-flex">
+                        <i class="fas fa-folder-open"></i> Ver mi trabajo
+                    </a>
+                </div>
+                <div class="about-cards">
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="info-card-body"><h4>Ubicación</h4><p>Buenos Aires, Argentina</p></div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="info-card-body"><h4>Formación</h4><p>EducaciónIT — Full Stack Development</p></div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-briefcase"></i></div>
+                        <div class="info-card-body"><h4>Especialidad</h4><p>E-commerce · Web Apps · REST APIs</p></div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-language"></i></div>
+                        <div class="info-card-body"><h4>Idiomas</h4><p>Español (nativo) · Inglés técnico</p></div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-gamepad"></i></div>
+                        <div class="info-card-body"><h4>Intereses</h4><p>Videojuegos · Diseño UI · Open Source</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <section id="proyectos" class="section">
-                    <h2><i class="fas fa-gamepad"></i> MISIONES COMPLETADAS</h2>
-                    <div class="project">
-                        <h3>E-COMMERCE MY FORTRESS TOY</h3>
-                        <p class="date">Proyecto Final - EducaciónIT | 2023-2024</p>
-                        <p>Tienda online especializada en figuras de acción y coleccionables. Desarrollé una plataforma
-                            completa con carrito de compras, integración con Mercado Pago y panel de administración.</p>
-                        <p><strong>Logros:</strong> Implementación exitosa de pasarela de pago, base de datos optimizada
-                            y interfaz de usuario intuitiva. Todo el backend fue testeado rigurosamente con Postman.</p>
-                        <div class="skill-list">
+    <!-- Projects -->
+    <section id="proyectos">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">Proyectos</p>
+                <div class="divider"></div>
+                <h2 class="section-title">Lo que he construido</h2>
+                <p class="section-desc">Proyectos reales con impacto real. Desde diseño hasta deploy.</p>
+            </div>
+            <div class="projects-grid">
+
+                <!-- Noctis -->
+                <div class="project-card featured reveal">
+                    <div class="project-thumb">
+                        <img src="img/Noctis.png" alt="Noctis — plataforma de vida nocturna"
+                             onerror="this.parentElement.innerHTML='<div class=\'project-thumb-placeholder noctis\'>🌙<span class=\'project-featured-badge\'>⭐ Destacado</span></div>'">
+                        <span class="project-featured-badge">⭐ Destacado</span>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span class="project-year">2024 — 2025</span>
+                        </div>
+                        <h3>Noctis</h3>
+                        <p>Plataforma web real orientada a la vida nocturna. Ofrece un sistema de gestión de ventas para bares, boliches y locales nocturnos, con módulos de <strong>reservas</strong>, <strong>validación por QR</strong>, control de acceso, resúmenes operativos y estadísticas útiles tanto para los establecimientos como para los usuarios finales.</p>
+                        <div class="tags">
+                            <span class="tag">HTML5</span>
+                            <span class="tag">CSS3</span>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag cyan">Validación QR</span>
+                            <span class="tag cyan">Reservas</span>
+                            <span class="tag pink">Vida Nocturna</span>
+                            <span class="tag">Dashboard</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://www.gonoctis.com" target="_blank" class="project-link primary">
+                                <i class="fas fa-external-link-alt"></i> Ver sitio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-commerce -->
+                <div class="project-card reveal">
+                    <div class="project-thumb">
+                        <img src="img/Mi ecommerce de juguetes.png" alt="My Fortress Toy" onerror="this.parentElement.innerHTML='<div class=\'project-thumb-placeholder ecommerce\'>🏪</div>'">
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span class="project-year">2023 — 2024</span>
+                        </div>
+                        <h3>My Fortress Toy</h3>
+                        <p>E-commerce completo de figuras de acción y coleccionables. Carrito de compras, integración con Mercado Pago y panel de administración para gestión de stock.</p>
+                        <div class="tags">
                             <span class="tag">React</span>
                             <span class="tag">Node.js</span>
                             <span class="tag">MongoDB</span>
                             <span class="tag">Express</span>
-                            <span class="tag ecommerce">Mercado Pago API</span>
-                            <span class="tag">Postman</span>
+                            <span class="tag cyan">Mercado Pago</span>
+                            <span class="tag pink">Postman</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link primary">
+                                <i class="fas fa-external-link-alt"></i> Ver proyecto
+                            </a>
+                            <a href="https://github.com/DextorJJ" target="_blank" class="project-link ghost">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
                         </div>
                     </div>
+                </div>
 
-                </section>
-            </div>
-
-            <div class="sidebar">
-                <section id="habilidades" class="section">
-                    <h2><i class="fas fa-star"></i> HABILIDADES DE PERSONAJE</h2>
-                    <div class="skills-container">
-                        <div class="skill-category">
-                            <h3>FRONTEND</h3>
-                            <div class="skill-list">
-                                <span class="tag">HTML5</span>
-                                <span class="tag">CSS3</span>
-                                <span class="tag">JavaScript</span>
-                                <span class="tag">React</span>
-                                <span class="tag">Bootstrap</span>
-                            </div>
+                <!-- Portafolio -->
+                <div class="project-card reveal">
+                    <div class="project-thumb">
+                        <div class="project-thumb-placeholder" style="background:linear-gradient(135deg,#0f0f2a,#1a1040,#001020);">💼</div>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span class="project-year">2025</span>
                         </div>
-
-                        <div class="skill-category">
-                            <h3>BACKEND</h3>
-                            <div class="skill-list">
-                                <span class="tag">Node.js</span>
-                                <span class="tag">Express</span>
-                                <span class="tag">RESTful APIs</span>
-                                <span class="tag">JSON</span>
-                            </div>
+                        <h3>Portafolio Personal</h3>
+                        <p>Este mismo sitio. Diseñado y desarrollado desde cero con HTML, CSS y JavaScript puro. Enfocado en performance, accesibilidad y una estética moderna y profesional.</p>
+                        <div class="tags">
+                            <span class="tag">HTML5</span>
+                            <span class="tag">CSS3</span>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag cyan">Responsive</span>
                         </div>
-
-                        <div class="skill-category">
-                            <h3>BASES DE DATOS</h3>
-                            <div class="skill-list">
-                                <span class="tag">MongoDB</span>
-                                <span class="tag">MySQL</span>
-                                <span class="tag">SQLite</span>
-                            </div>
-                        </div>
-
-                        <div class="skill-category">
-                            <h3>HERRAMIENTAS</h3>
-                            <div class="skill-list">
-                                <span class="tag">Git</span>
-                                <span class="tag">Postman</span>
-                                <span class="tag">NPM</span>
-                                <span class="tag">Webpack</span>
-                            </div>
+                        <div class="project-links">
+                            <a href="https://github.com/DextorJJ" target="_blank" class="project-link primary">
+                                <i class="fab fa-github"></i> Ver código
+                            </a>
                         </div>
                     </div>
-                </section>
+                </div>
 
-                <section class="section">
-                    <h2><i class="fas fa-tools"></i> POWER-UPS E-COMMERCE</h2>
-                    <div class="skill-list">
-                        <span class="tag ecommerce">Pasarelas de pago</span>
-                        <span class="tag ecommerce">Carritos de compra</span>
-                        <span class="tag ecommerce">Sistemas de inventario</span>
-                        <span class="tag ecommerce">Optimización SEO</span>
-                        <span class="tag ecommerce">UX para e-commerce</span>
-                    </div>
-                </section>
-
-                <section class="section">
-                    <h2><i class="fas fa-trophy"></i> LOGROS</h2>
-                    <div class="skill-list">
-                        <span class="tag">Proyecto Final EducaciónIT</span>
-                        <span class="tag">Integración Mercado Pago</span>
-                        <span class="tag">Testing con Postman</span>
-                        <span class="tag">Desarrollo Full Stack</span>
-                    </div>
-                </section>
-
-                <section class="section">
-                    <h2><i class="fas fa-gamepad"></i> ZONA DE JUEGO</h2>
-                    <p>Cuando no estoy codificando, me encuentras:</p>
-                    <div class="skill-list">
-                        <span class="tag">Jugando RPGs</span>
-                        <span class="tag">Explorando mundos abiertos</span>
-                        <span class="tag">Competiendo en shooters</span>
-                        <span class="tag">Diseñando niveles</span>
-                    </div>
-                </section>
             </div>
         </div>
+    </section>
 
-        <footer>
-            <p class="blink">¡LISTO PARA EL SIGUIENTE DESAFÍO!</p>
-            <p>Contactame para unir fuerzas y crear algo épico juntos</p>
-        </footer>
-    </div>
+    <!-- Skills -->
+    <section id="habilidades">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">Habilidades</p>
+                <div class="divider"></div>
+                <h2 class="section-title">Stack tecnológico</h2>
+                <p class="section-desc">Tecnologías que uso para construir productos completos de principio a fin.</p>
+            </div>
+            <div class="skills-cats reveal">
+
+                <!-- Frontend -->
+                <div class="skill-cat">
+                    <div class="skill-cat-header">
+                        <div class="skill-cat-icon violet"><i class="fas fa-desktop"></i></div>
+                        <h3>Frontend</h3>
+                    </div>
+                    <p class="skill-cat-desc">
+                        Construyo interfaces modernas con <strong>React 19</strong> y <strong>Vite</strong> como bundler. Para los estilos uso <strong>TailwindCSS 4</strong> con componentes accesibles de <strong>Radix UI</strong> y <strong>shadcn/ui</strong>. Las animaciones las manejo con <strong>Framer Motion</strong> y los gráficos 3D con <strong>Three.js</strong>. La navegación SPA corre sobre <strong>React Router / Wouter</strong>.
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip v">React 19</span>
+                        <span class="chip v">Vite 6</span>
+                        <span class="chip v">TailwindCSS 4</span>
+                        <span class="chip v">Framer Motion</span>
+                        <span class="chip v">Three.js</span>
+                        <span class="chip">Radix UI</span>
+                        <span class="chip">shadcn/ui</span>
+                        <span class="chip">React Router</span>
+                        <span class="chip">Recharts / D3</span>
+                        <span class="chip">Embla Carousel</span>
+                    </div>
+                </div>
+
+                <!-- Estado y formularios -->
+                <div class="skill-cat">
+                    <div class="skill-cat-header">
+                        <div class="skill-cat-icon cyan"><i class="fas fa-layer-group"></i></div>
+                        <h3>Estado, datos y formularios</h3>
+                    </div>
+                    <p class="skill-cat-desc">
+                        El estado del servidor y el fetching lo gestiono con <strong>TanStack React Query v5</strong>. Los formularios los construyo con <strong>React Hook Form</strong> y valido los datos con <strong>Zod</strong>. Las llamadas HTTP las hago con <strong>Axios</strong>.
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip c">TanStack Query v5</span>
+                        <span class="chip c">React Hook Form</span>
+                        <span class="chip c">Zod</span>
+                        <span class="chip c">Axios</span>
+                        <span class="chip">sonner</span>
+                        <span class="chip">cmdk</span>
+                        <span class="chip">next-themes</span>
+                        <span class="chip">react-day-picker</span>
+                        <span class="chip">input-otp</span>
+                        <span class="chip">qrcode.react</span>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="skill-cat">
+                    <div class="skill-cat-header">
+                        <div class="skill-cat-icon pink"><i class="fas fa-server"></i></div>
+                        <h3>Backend</h3>
+                    </div>
+                    <p class="skill-cat-desc">
+                        El servidor corre en <strong>Node.js</strong> con <strong>Express 4</strong>. Incluye middlewares de seguridad como <strong>rate limiting</strong>, <strong>CORS</strong> y <strong>compresión</strong>. La comunicación en tiempo real se maneja con <strong>Socket.IO 4</strong>. Para tareas programadas uso <strong>node-cron</strong> y el manejo de fechas con <strong>date-fns</strong>.
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip p">Node.js</span>
+                        <span class="chip p">Express 4</span>
+                        <span class="chip p">Socket.IO 4</span>
+                        <span class="chip">Morgan</span>
+                        <span class="chip">CORS</span>
+                        <span class="chip">express-rate-limit</span>
+                        <span class="chip">node-cron</span>
+                        <span class="chip">date-fns</span>
+                        <span class="chip">Joi</span>
+                        <span class="chip">uuid</span>
+                    </div>
+                </div>
+
+                <!-- Base de datos y auth -->
+                <div class="skill-cat">
+                    <div class="skill-cat-header">
+                        <div class="skill-cat-icon green"><i class="fas fa-database"></i></div>
+                        <h3>Base de datos y autenticación</h3>
+                    </div>
+                    <p class="skill-cat-desc">
+                        La base de datos principal es <strong>MongoDB</strong> con <strong>Mongoose 8</strong>. La autenticación usa <strong>JWT</strong> para sesiones, <strong>Passport.js</strong> con OAuth de Google y Facebook, <strong>bcryptjs</strong> para hash de contraseñas y <strong>speakeasy</strong> para autenticación de dos factores (2FA/TOTP).
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip g">MongoDB</span>
+                        <span class="chip g">Mongoose 8</span>
+                        <span class="chip g">JWT</span>
+                        <span class="chip g">Passport.js</span>
+                        <span class="chip">OAuth Google</span>
+                        <span class="chip">OAuth Facebook</span>
+                        <span class="chip">bcryptjs</span>
+                        <span class="chip">speakeasy (2FA)</span>
+                    </div>
+                </div>
+
+                <!-- Servicios e integraciones -->
+                <div class="skill-cat">
+                    <div class="skill-cat-header">
+                        <div class="skill-cat-icon violet"><i class="fas fa-plug"></i></div>
+                        <h3>Servicios e integraciones</h3>
+                    </div>
+                    <p class="skill-cat-desc">
+                        Los pagos y entradas se procesan con <strong>MercadoPago SDK v2</strong>. El envío de emails transaccionales es via <strong>Resend</strong> y las notificaciones push con <strong>web-push</strong>. Las imágenes se almacenan en <strong>Cloudinary</strong>, los archivos se suben con <strong>Multer</strong>, y el sistema puede exportar reportes en <strong>Excel</strong> (ExcelJS) y <strong>PDF</strong> (jsPDF). Los QR del lado del servidor se generan con la librería <strong>qrcode</strong>.
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip v">MercadoPago SDK v2</span>
+                        <span class="chip v">Resend</span>
+                        <span class="chip v">web-push</span>
+                        <span class="chip v">Cloudinary</span>
+                        <span class="chip">Multer</span>
+                        <span class="chip">ExcelJS</span>
+                        <span class="chip">jsPDF</span>
+                        <span class="chip">qrcode</span>
+                        <span class="chip">ical-generator</span>
+                        <span class="chip">marked</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section id="experiencia">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">Formación & Logros</p>
+                <div class="divider"></div>
+                <h2 class="section-title">Mi trayectoria</h2>
+                <p class="section-desc">El camino que me trajo hasta acá.</p>
+            </div>
+            <div class="timeline reveal">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2023 — 2024</div>
+                    <h3>Desarrollo Full Stack — Proyecto Final</h3>
+                    <p class="place">EducaciónIT</p>
+                    <p>Desarrollé My Fortress Toy como proyecto final: una tienda online completa con carrito, panel de admin e integración de Mercado Pago.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2023</div>
+                    <h3>Curso Full Stack Developer</h3>
+                    <p class="place">EducaciónIT</p>
+                    <p>Formación intensiva en HTML, CSS, JavaScript, React, Node.js, Express, MongoDB, MySQL y herramientas modernas de desarrollo.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2024 — 2025</div>
+                    <h3>Desarrollo de Noctis</h3>
+                    <p class="place">Producto Real — gonoctis.com</p>
+                    <p>Plataforma web para la gestión de salidas nocturnas: sistema de ventas para bares y boliches, reservas online, validación por QR en puerta, resúmenes y estadísticas para dueños y usuarios.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2025</div>
+                    <h3>Portafolio Profesional</h3>
+                    <p class="place">Proyecto Personal</p>
+                    <p>Rediseño completo del portafolio con diseño moderno, animaciones reveal y presentación profesional de proyectos y habilidades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contacto">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">Contacto</p>
+                <div class="divider" style="margin:auto;margin-bottom:16px;"></div>
+                <h2 class="section-title">¿Hablamos?</h2>
+                <p class="section-desc" style="margin:auto;margin-bottom:48px;">Estoy abierto a nuevas oportunidades, proyectos freelance o simplemente charlar sobre tecnología.</p>
+            </div>
+            <div class="contact-grid reveal">
+                <div class="contact-card">
+                    <div class="contact-card-icon purple"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-card-body">
+                        <span class="label">Email</span>
+                        <span class="value">Sebasuriel777@gmail.com</span>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-card-icon cyan"><i class="fas fa-phone"></i></div>
+                    <div class="contact-card-body">
+                        <span class="label">Teléfono</span>
+                        <span class="value">+54 11 5346-8727</span>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-card-icon pink"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="contact-card-body">
+                        <span class="label">Ubicación</span>
+                        <span class="value">Buenos Aires, Argentina</span>
+                    </div>
+                </div>
+            </div>
+            <div class="social-links reveal">
+                <a href="https://github.com/DextorJJ" target="_blank" class="social-link" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/sebastiánrodriguez" target="_blank" class="social-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="mailto:Sebasuriel777@gmail.com" class="social-link" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Diseñado y desarrollado por <span>Sebastián Rodriguez</span> · © 2025</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Hamburger menu
+        function toggleNav() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+        document.querySelectorAll('#navLinks a').forEach(l => {
+            l.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+        });
+
+        // Reveal on scroll
+        const revealEls = document.querySelectorAll('.reveal');
+        const revealObs = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('visible'), i * 80);
+                    revealObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        revealEls.forEach(r => revealObs.observe(r));
+
+
+    </script>
+
 </body>
-
 </html>
